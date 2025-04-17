@@ -1,0 +1,865 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0034)http://10.133.2.200/webprog/3.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>webアプリの自動操縦</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Hirotaka Niitsuma">
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./webアプリの自動操縦_files/text.css"><script src="./webアプリの自動操縦_files/jquery-1.9.1.min.js.ダウンロード"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href="http://10.133.2.200/webprog/index.html"> UP </a>
+ |
+ <a accesskey="H" href="http://10.133.2.200/webprog/index.html"> HOME </a>
+</div><div id="content">
+<h1 class="title">webアプリの自動操縦</h1>
+<div id="table-of-contents">
+<h2>目次</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="http://10.133.2.200/webprog/3.html#orgd2bb458">1. getとpostをするプログラム</a>
+<ul>
+<li><a href="http://10.133.2.200/webprog/3.html#orgade5261">get</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#orgdcc3fdc">post</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#orgd2270d5">課題</a></li>
+</ul>
+</li>
+<li><a href="http://10.133.2.200/webprog/3.html#org7baf18b">2. session</a>
+<ul>
+<li><a href="http://10.133.2.200/webprog/3.html#orgcb26c72">簡単なsession</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#org159189a">課題</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#org9e66bc8">課題</a></li>
+</ul>
+</li>
+<li><a href="http://10.133.2.200/webprog/3.html#org4ba6a2a">3. ウェブスクレイピング</a>
+<ul>
+<li><a href="http://10.133.2.200/webprog/3.html#orgc50d1bd">BeautifulSoup</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#orgdf823e0">xpath</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#orgac5aeae">google chromeブラウザのデベロッパーツール</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#orgdfc94b1">selenium</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#org097f23c">課題</a></li>
+</ul>
+</li>
+<li><a href="http://10.133.2.200/webprog/3.html#orgafb77c4">4. login</a>
+<ul>
+<li><a href="http://10.133.2.200/webprog/3.html#org59f743d">課題</a></li>
+<li><a href="http://10.133.2.200/webprog/3.html#org6254b13">発展課題</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd2bb458" class="outline-2">
+<h2 id="orgd2bb458"><span class="section-number-2">1</span> getとpostをするプログラム</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgade5261" class="outline-3">
+<h3 id="orgade5261">get</h3>
+<div class="outline-text-3" id="text-orgade5261">
+<p>
+以下のプログラムを doclient.py で保存してpython3 doclient.py を実行してみよう。
+</p>
+
+
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/doclient1.py">dyn/examples/doclient1.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr">1: </span>import requests
+<span class="linenr">2: </span>
+<span class="linenr">3: </span>url="http://128.199.144.38:5100/"
+<span class="linenr">4: </span>response = requests.get(url)
+<span class="linenr">5: </span>print(response.text)
+</pre>
+</div>
+
+<p>
+以下のような表示がされるはず。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">どの手を選びますか？ 
+&lt;form action="/" method="POST"&gt;
+&lt;input type="radio" name="qjan" value=0&gt; ぐー 
+&lt;input type="radio" name="qjan" value=1&gt; ちょき
+&lt;input type="radio" name="qjan" value=2 checked&gt; ぱー
+&lt;br&gt;
+&lt;input type="submit" value="送信する"&gt;
+&lt;/form&gt;
+
+</pre>
+</div>
+
+<p>
+doclient1.pyはホームページのhtmlを得ることができる。
+この表示からformでqjanという変数を使っていることがわかる。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdcc3fdc" class="outline-3">
+<h3 id="orgdcc3fdc">post</h3>
+<div class="outline-text-3" id="text-orgdcc3fdc">
+<p>
+プログラムでじゃんけんの入力(post) をするには以下のようにする。
+</p>
+
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/doclient2.py">dyn/examples/doclient2.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr">1: </span>import requests
+<span class="linenr">2: </span>
+<span class="linenr">3: </span>url="http://128.199.144.38:5100/"
+<span class="linenr">4: </span>response = requests.post(url,data={'qjan':1})
+<span class="linenr">5: </span>print(response.text)
+</pre>
+</div>
+
+<p>
+このプログラムでは qjan=1 ちょき が送信される。
+結果として以下のようなものが表示される。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">コンピュータ:ぱー&lt;br&gt;
+あなた:ちょき&lt;br&gt;
+あなたの勝ち&lt;br&gt;
+&lt;br&gt;
+どの手を選びますか？ 
+&lt;form action="/" method="POST"&gt;
+&lt;input type="radio" name="qjan" value=0&gt; ぐー 
+&lt;input type="radio" name="qjan" value=1&gt; ちょき
+&lt;input type="radio" name="qjan" value=2 checked&gt; ぱー
+&lt;br&gt;
+&lt;input type="submit" value="送信する"&gt;
+&lt;/form&gt;
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgd2270d5" class="outline-3">
+<h3 id="orgd2270d5">課題</h3>
+<div class="outline-text-3" id="text-orgd2270d5">
+<p>
+自分のapp.py をプログラムで同様にpostで操作せよ
+(
+手順としては、１つのターミナルで app.py  を動かしたら、もう１つターミナルを立ち上げて、そこで doclient.py を実行すればよい
+)
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org7baf18b" class="outline-2">
+<h2 id="org7baf18b"><span class="section-number-2">2</span> session</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<a href="http://10.133.2.200:5100/">http://10.133.2.200:5100/</a>
+</p>
+
+<p>
+これは過去の履歴を見て、今までにしたじゃんけんの対戦回数と勝率を表示するプログラムになっている。このような過去の履歴を利用するには session という仕組みを利用する。
+</p>
+</div>
+
+<div id="outline-container-orgcb26c72" class="outline-3">
+<h3 id="orgcb26c72">簡単なsession</h3>
+<div class="outline-text-3" id="text-orgcb26c72">
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/appsession1.py">dyn/examples/appsession1.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr"> 1: </span>from flask import *
+<span class="linenr"> 2: </span>
+<span class="linenr"> 3: </span>app = Flask(__name__)
+<span class="linenr"> 4: </span>
+<span class="linenr"> 5: </span>app.secret_key = 'abcdefghijklmn'
+<span class="linenr"> 6: </span>
+<span class="linenr"> 7: </span>@app.route("/", methods=["GET", "POST"])
+<span class="linenr"> 8: </span>def root1():
+<span class="linenr"> 9: </span>    txt=""
+<span class="linenr">10: </span>    if request.method == "POST":
+<span class="linenr">11: </span>	if "ccount" in session:
+<span class="linenr">12: </span>	    session["ccount"] += 1 #ここで数えている 
+<span class="linenr">13: </span>	else:
+<span class="linenr">14: </span>	    session["ccount"] = 1
+<span class="linenr">15: </span>	txt = txt + "count "+ str(session["ccount"]) +"&lt;br&gt;"
+<span class="linenr">16: </span>
+<span class="linenr">17: </span>    return txt+"""
+<span class="linenr">18: </span>    &lt;form action="/" method="POST"&gt;
+<span class="linenr">19: </span>    &lt;input type="submit" value="submit"&gt;
+<span class="linenr">20: </span>    &lt;/form&gt;"""
+<span class="linenr">21: </span>
+<span class="linenr">22: </span>if __name__ == "__main__":
+<span class="linenr">23: </span>    app.run()
+</pre>
+</div>
+
+<p>
+このprogramを動かしてfirefoxなどで
+<a href="http://localhost:5000/">http://localhost:5000/</a>
+を開いてみよう。このプログラムはクリックした回数を数えるプログラムとなっている。
+</p>
+
+<p>
+単純にクリックする以下のプログラムをこのホームページに使うと毎回リセットされてcount 1にしかならない。
+動かして試してみよう。
+</p>
+
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/doclientses1.py">dyn/examples/doclientses1.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr"> 1: </span>import requests
+<span class="linenr"> 2: </span>
+<span class="linenr"> 3: </span>url="http://localhost:5000/"
+<span class="linenr"> 4: </span>
+<span class="linenr"> 5: </span>response = requests.post(url)
+<span class="linenr"> 6: </span>print(response.text)
+<span class="linenr"> 7: </span>
+<span class="linenr"> 8: </span>response = requests.post(url)
+<span class="linenr"> 9: </span>print(response.text)
+<span class="linenr">10: </span>
+<span class="linenr">11: </span>response = requests.post(url)
+<span class="linenr">12: </span>print(response.text)
+</pre>
+</div>
+
+<p>
+このホームページに履歴の情報を残しながらクリックするプログラムは以下のようにするとできる。
+動かして試してみよう。
+</p>
+
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/doclientses2.py">dyn/examples/doclientses2.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr"> 1: </span>import requests
+<span class="linenr"> 2: </span>
+<span class="linenr"> 3: </span>ses = requests.Session()
+<span class="linenr"> 4: </span>url="http://localhost:5000/"
+<span class="linenr"> 5: </span>
+<span class="linenr"> 6: </span>response = ses.post(url)
+<span class="linenr"> 7: </span>print(response.text)
+<span class="linenr"> 8: </span>
+<span class="linenr"> 9: </span>response = ses.post(url)
+<span class="linenr">10: </span>print(response.text)
+<span class="linenr">11: </span>
+<span class="linenr">12: </span>response = ses.post(url)
+<span class="linenr">13: </span>print(response.text)
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org159189a" class="outline-3">
+<h3 id="org159189a">課題</h3>
+<div class="outline-text-3" id="text-org159189a">
+<p>
+<a href="http://10.133.2.200:5100/">http://10.133.2.200:5100/</a>
+</p>
+
+<p>
+じゃんけんで対戦回数と勝率を表示するプログラムに対数回数５回になるまで、じゃんけんをする
+doclientsesjan1.py
+を作成せよ。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e66bc8" class="outline-3">
+<h3 id="org9e66bc8">課題</h3>
+<div class="outline-text-3" id="text-org9e66bc8">
+<p>
+<a href="http://10.133.2.200:5100/">http://10.133.2.200:5100</a>
+</p>
+
+<p>
+は、負けると８０％の確率で相手の真似をするじゃんけんプログラムである。例えば
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">コンピュータ:ぐー
+あなた:ぱー
+あなたの勝ち
+</pre>
+</div>
+
+<p>
+の場合は８０％の確率で次は、コンピュータ:ぱー　になる。
+このプログラムと100回以上postで対戦するプログラム
+doclientsesjan2.py
+</p>
+
+<p>
+を作成し、勝率 50％以上を達成せよ。
+なお一回対戦するごとに以下の命令を実行して少なくとも１秒以上の間隔を入れること。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">import time
+
+time.sleep(1)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org4ba6a2a" class="outline-2">
+<h2 id="org4ba6a2a"><span class="section-number-2">3</span> ウェブスクレイピング</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgc50d1bd" class="outline-3">
+<h3 id="orgc50d1bd">BeautifulSoup</h3>
+<div class="outline-text-3" id="text-orgc50d1bd">
+<p>
+金銀などの貴金属の値段は重要な経済指標の１つである。
+次は yahoo acutionで silver　を含むリンクを検索するプログラムである（ノイズもかなり含まれるが）
+</p>
+
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/yahooauction.py">dyn/examples/yahooauction.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr">1: </span>import requests
+<span class="linenr">2: </span>from bs4 import BeautifulSoup
+<span class="linenr">3: </span>
+<span class="linenr">4: </span>url="https://auctions.yahoo.co.jp/search/search?p=silver&amp;exflg=1&amp;b=51&amp;n=50"
+<span class="linenr">5: </span>response = requests.get(url)
+<span class="linenr">6: </span>soup = BeautifulSoup(response.text)
+<span class="linenr">7: </span>rets = soup.find_all('a')
+<span class="linenr">8: </span>for x in rets:
+<span class="linenr">9: </span>    print(x)
+</pre>
+</div>
+
+<p>
+このようなホームページから取り出す行為は行為はウェブスクレイピングと呼ばれる。
+</p>
+
+<p>
+次は yahoo acutionで 銀製品　を含むリンクを検索するプログラムである（ノイズもかなり含まれるが）
+</p>
+
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/yahooauction2.py">dyn/examples/yahooauction2.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr"> 1: </span>import requests
+<span class="linenr"> 2: </span>from bs4 import BeautifulSoup
+<span class="linenr"> 3: </span>import urllib.parse
+<span class="linenr"> 4: </span>
+<span class="linenr"> 5: </span>s_quote = urllib.parse.quote("銀製品")
+<span class="linenr"> 6: </span>#print(s_quote)
+<span class="linenr"> 7: </span>url="https://auctions.yahoo.co.jp/search/search?p="+
+<span class="linenr"> 8: </span>s_quote + "&amp;exflg=1&amp;b=51&amp;n=50"
+<span class="linenr"> 9: </span>response = requests.get(url)
+<span class="linenr">10: </span>soup = BeautifulSoup(response.text)
+<span class="linenr">11: </span>rets = soup.find_all('a')
+<span class="linenr">12: </span>for x in rets:
+<span class="linenr">13: </span>    print(x)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdf823e0" class="outline-3">
+<h3 id="orgdf823e0">xpath</h3>
+<div class="outline-text-3" id="text-orgdf823e0">
+<p>
+複雑な情報をホームページから取り出すにはBeautifulSoupよりもxpathと呼ばれる記法で情報を指定した方がやりやすい。
+xpathという記法でウェブスクレイピングをできるライブラリはいくつかあるが、
+ここではlxmlというライブラリを使って行う例を紹介する。
+</p>
+
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/wikijplxml.py">dyn/examples/wikijplxml.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr"> 1: </span>import requests
+<span class="linenr"> 2: </span>import lxml.html
+<span class="linenr"> 3: </span>
+<span class="linenr"> 4: </span>url="https://ja.wikipedia.org/wiki/ChatGPT"
+<span class="linenr"> 5: </span>
+<span class="linenr"> 6: </span>response = requests.get(url)
+<span class="linenr"> 7: </span>
+<span class="linenr"> 8: </span>htmldata = lxml.html.fromstring(response.content)
+<span class="linenr"> 9: </span>
+<span class="linenr">10: </span>p_content = htmldata.xpath("//p")
+<span class="linenr">11: </span>for content in p_content:
+<span class="linenr">12: </span>    print(content.text)
+</pre>
+</div>
+
+<p>
+xpathの詳細な文法は,
+</p>
+
+<p>
+<a href="http://10.133.2.200/webprog/5.html#org1e8ec5e">http://10.133.2.200/webprog/5.html#org1e8ec5e</a>
+</p>
+
+<p>
+を見ること。
+</p>
+</div>
+
+
+<div id="outline-container-orgac5aeae" class="outline-3">
+<h3 id="orgac5aeae">google chromeブラウザのデベロッパーツール</h3>
+<div class="outline-text-3" id="text-orgac5aeae">
+<p>
+(Windowsにインストールされている)google chromeブラウザを起動して <a href="https://ja.wikipedia.org/wiki/ChatGPT">https://ja.wikipedia.org/wiki/ChatGPT</a> のホームページを開いてみよう。
+次にブラウザの右上にある … が縦にならんでいる部分をクリックしてメニュ一覧を表示する。
+メニュ一覧から「その他のツール」=&gt; 「デベロッパーツール」を選択しよう。
+</p>
+
+
+<p>
+するとホームページのコードが表示される。
+このコードの中を適当にマウスで選択してみよう。
+左側のホームページの該当する部分が色分けして表示される。
+特に &lt;div と表示されている部分を展開すると細かい部分を選択できる。
+ホームページのコードを選択した状態で右クリックすると、メニューが表示されるので
+「Copy」=&gt; 「Copy XPATH」というメニューを選択すると、今選択している部分を指定するXPATHがクリップボードにコピーされる。
+コピーされたクリップボードの内容を
+lxmlを使ったpythonコードの xpath("//p")の部分に貼り付けて、いろいろな情報を抽出してみよう。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgdfc94b1" class="outline-3">
+<h3 id="orgdfc94b1">selenium</h3>
+<div class="outline-text-3" id="text-orgdfc94b1">
+<p>
+複雑なアニメションでメニュー選択するようなホームページは BeautifulSoupでもlxmlでも情報を抽出できないことが多い。
+その場合はseleniumというライブラリを使うと情報を抽出できることがある。
+seleniumを動かすには多くの知識やスキルが必要となるが、EWSや実験のサーバー(10.133.2.200)で動かすためのヒントを以下のリンクに書いた。
+スキルに自信のある人は動かせるか試してみよう。
+</p>
+
+<p>
+<a href="http://10.133.2.200/webprog/4.html">http://10.133.2.200/webprog/4.html</a>
+</p>
+
+<p>
+なおseleniumもXPATHを選択に使う。
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org097f23c" class="outline-3">
+<h3 id="org097f23c">課題</h3>
+<div class="outline-text-3" id="text-org097f23c">
+<ul class="org-ul">
+<li>日本語 wikipedia <a href="https://ja.wikipedia.org/">https://ja.wikipedia.org/</a> の右上の検索窓に銀製品を入力し、どんなurlが表示されるか確認し、 yahoo acutionと同様に銀製品　を含むリンクを検索するプログラムを作成せよ</li>
+<li>自分の好きな趣味のホームページからBeautifulSoupかlxmlで情報を取り出すことができるか試してみよう。もしうまくいかないならseleniumも試してみよう。</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgafb77c4" class="outline-2">
+<h2 id="orgafb77c4"><span class="section-number-2">4</span> login</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+以下はユーザー名 userxyz でパスワード pass123 と入力しないとWelcomeと表示されないないプロログラムである。
+また
+<a href="http://localhost:5000/logout">http://localhost:5000/logout</a>
+にアクセスするとログアウトになり、再度パスワードを入力しないとログインした状態になれない。
+</p>
+
+<p>
+session["flag"]
+という値でログインしているかどうかを判定している。
+適用なところに 
+print(session["flag"]) などを入れて
+</p>
+
+<ul class="org-ul">
+<li><a href="http://localhost:5000/">http://localhost:5000/</a></li>
+<li><a href="http://localhost:5000/login">http://localhost:5000/login</a></li>
+<li><a href="http://localhost:5000/logout">http://localhost:5000/logout</a></li>
+</ul>
+
+<p>
+などをfirefoxなどで開いて動作を確認してみよう
+</p>
+
+
+<p>
+<a href="http://10.133.2.200/webprog/dyn/examples/applogin.py">dyn/examples/applogin.py</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-nilang"><span class="linenr"> 1: </span>from flask import Flask, request, redirect,  session
+<span class="linenr"> 2: </span>
+<span class="linenr"> 3: </span>app = Flask(__name__)
+<span class="linenr"> 4: </span>app.config['SECRET_KEY']='secret_key'
+<span class="linenr"> 5: </span>app.config['USERNAME']='userxyz'
+<span class="linenr"> 6: </span>app.config['PASSWORD']='pass123'
+<span class="linenr"> 7: </span>
+<span class="linenr"> 8: </span>@app.route('/')
+<span class="linenr"> 9: </span>def index():
+<span class="linenr">10: </span>    if "flag" in session and session["flag"]:
+<span class="linenr">11: </span>	return "Welcome"
+<span class="linenr">12: </span>    return redirect('/login')
+<span class="linenr">13: </span>
+<span class="linenr">14: </span>@app.route('/login', methods=['GET'])
+<span class="linenr">15: </span>def login():
+<span class="linenr">16: </span>    # print(session["flag"],'login:GET')
+<span class="linenr">17: </span>
+<span class="linenr">18: </span>    if "flag" in session and session["flag"]:
+<span class="linenr">19: </span>	return redirect('/welcome')
+<span class="linenr">20: </span>    txt=""
+<span class="linenr">21: </span>    if "userflag" in session and not session["userflag"]:
+<span class="linenr">22: </span>	txt = txt + "username wrong&lt;br&gt;"
+<span class="linenr">23: </span>    if "passflag" in session and not session["passflag"]:
+<span class="linenr">24: </span>	txt = txt + "password wrong&lt;br&gt;"
+<span class="linenr">25: </span>    if "logoutflag" in session and not session["logoutflag"]:
+<span class="linenr">26: </span>	txt = txt + "logout&lt;br&gt;"
+<span class="linenr">27: </span>    return txt+"""
+<span class="linenr">28: </span>    &lt;form action="/login" method="post"&gt;
+<span class="linenr">29: </span>      &lt;div&gt;
+<span class="linenr">30: </span>	&lt;label for="user"&gt;user name&lt;/label&gt;
+<span class="linenr">31: </span>	&lt;input type="text" id="user" name="username"&gt;
+<span class="linenr">32: </span>      &lt;/div&gt;
+<span class="linenr">33: </span>      &lt;div&gt;
+<span class="linenr">34: </span>	&lt;label for="pass"&gt;password&lt;/label&gt;
+<span class="linenr">35: </span>	&lt;input type="password" id="pass" name="password"&gt;
+<span class="linenr">36: </span>      &lt;/div&gt;
+<span class="linenr">37: </span>      &lt;button type="submit"&gt;login&lt;/button&gt;
+<span class="linenr">38: </span>    &lt;/form&gt;
+<span class="linenr">39: </span>
+<span class="linenr">40: </span>    """
+<span class="linenr">41: </span>
+<span class="linenr">42: </span>@app.route('/login', methods=['POST'])
+<span class="linenr">43: </span>def login_post():
+<span class="linenr">44: </span>    # print(session["flag"],'login:POST')
+<span class="linenr">45: </span>
+<span class="linenr">46: </span>    username = request.form["username"]
+<span class="linenr">47: </span>    password = request.form["password"]
+<span class="linenr">48: </span>    if username != app.config['USERNAME']:
+<span class="linenr">49: </span>	session["userflag"]=False
+<span class="linenr">50: </span>    elif password != app.config['PASSWORD']:
+<span class="linenr">51: </span>	session["userflag"]=True
+<span class="linenr">52: </span>	session["passflag"]=False
+<span class="linenr">53: </span>    else:
+<span class="linenr">54: </span>	session["flag"] = True
+<span class="linenr">55: </span>	session["logoutflag"]=False
+<span class="linenr">56: </span>
+<span class="linenr">57: </span>	session["username"] = username
+<span class="linenr">58: </span>
+<span class="linenr">59: </span>	session["userflag"]=True
+<span class="linenr">60: </span>	session["passflag"]=True
+<span class="linenr">61: </span>
+<span class="linenr">62: </span>    if "flag" in session and session["flag"]:
+<span class="linenr">63: </span>	return "Welcome"
+<span class="linenr">64: </span>    else:
+<span class="linenr">65: </span>	return redirect('/login')
+<span class="linenr">66: </span>
+<span class="linenr">67: </span>@app.route('/welcome')
+<span class="linenr">68: </span>def welcome():
+<span class="linenr">69: </span>    if "flag" in session and session["flag"]:
+<span class="linenr">70: </span>	return "Welcome"
+<span class="linenr">71: </span>    return redirect('/login')
+<span class="linenr">72: </span>
+<span class="linenr">73: </span>@app.route('/contents')
+<span class="linenr">74: </span>def contents():
+<span class="linenr">75: </span>    if "flag" in session and session["flag"]:
+<span class="linenr">76: </span>	return "contents"
+<span class="linenr">77: </span>    return redirect('/login')
+<span class="linenr">78: </span>
+<span class="linenr">79: </span>@app.route('/logout')
+<span class="linenr">80: </span>def logout():
+<span class="linenr">81: </span>    session.pop('username', None)
+<span class="linenr">82: </span>    session.pop("flag", None)
+<span class="linenr">83: </span>    session["username"] = None
+<span class="linenr">84: </span>    session["flag"] = False
+<span class="linenr">85: </span>    session["logoutflag"]=True
+<span class="linenr">86: </span>    return redirect("/login")
+<span class="linenr">87: </span>
+<span class="linenr">88: </span>if __name__ == '__main__':
+<span class="linenr">89: </span>    app.run()
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org59f743d" class="outline-3">
+<h3 id="org59f743d">課題</h3>
+<div class="outline-text-3" id="text-org59f743d">
+<p>
+じゃんけんプログラムにログイン機能を追加して
+userx,usery,userzがパスワードpassxyzでログインできるようにしよう。
+それぞれのユーザーごとに対戦回数と勝率を表示するようにせよ。
+またログアウトもできるようにせよ。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6254b13" class="outline-3">
+<h3 id="org6254b13">発展課題</h3>
+<div class="outline-text-3" id="text-org6254b13">
+<p>
+Flask-Loginというライブラリを使えば大量のユーザーのログインをデータベースと連携して簡単に実装できる。
+sqliteを使って実装してみよう。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">著者: Hirotaka Niitsuma</p>
+<p class="email">Email: <a href="mailto:hirotakaniitsuma@omu.ac.jp">hirotakaniitsuma@omu.ac.jp</a></p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org/">Org</a> mode 9.3)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+
+
+</body></html>
