@@ -1,0 +1,31 @@
+1651562455380	geckodriver	INFO	Listening on 127.0.0.1:44843
+1651562455399	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-no-remote" "-profile" "/tmp/rust_mozprofileRV4sSJ"
+1651562457335	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileRV4sSJ/search.json.mozlz4", (void 0)))
+1651562460862	Marionette	INFO	Listening on port 34015
+Read port: 34015
+1651562461061	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1651562471192	Marionette	INFO	Stopped listening on port 34015
+1651562551777	geckodriver	INFO	Listening on 127.0.0.1:51321
+1651562551781	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-no-remote" "-profile" "/tmp/rust_mozprofilebnWGgl"
+1651562553436	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilebnWGgl/search.json.mozlz4", (void 0)))
+1651562555586	Marionette	INFO	Listening on port 37523
+Read port: 37523
+1651562555696	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1651562611773	Marionette	INFO	Stopped listening on port 37523
+
+###!!! [Parent][PImageBridgeParent] Error: RunMessage(msgname=PImageBridge::Msg_WillClose) Channel closing: too late to send/recv, messages will be lost
+
+1651562618282	geckodriver	INFO	Listening on 127.0.0.1:58873
+1651562618286	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-no-remote" "-profile" "/tmp/rust_mozprofileL1SiJ9"
+1651562619956	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileL1SiJ9/search.json.mozlz4", (void 0)))
+1651562622034	Marionette	INFO	Listening on port 34769
+Read port: 34769
+1651562622103	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.google.com"
+1651562634882	Marionette	INFO	Stopped listening on port 34769
+
+###!!! [Parent][PImageBridgeParent] Error: RunMessage(msgname=PImageBridge::Msg_WillClose) Channel closing: too late to send/recv, messages will be lost
+
